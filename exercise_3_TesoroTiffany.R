@@ -12,7 +12,7 @@ dir()
 ## If the current directory does not contain the `data` directory, set the
 ## working directory to project root folder (the folder should contain the `data` directory
 ## Use `setwd()` if needed
-setwd("/Users/tiffanytesoro/Documents/GitHub/dsc520")
+setwd("/Users/tiffanytesoro/Documents/GitHub/520")
 
 ## Import the Scores.csv dataset that has been provided for you
 ## Setting 'stringAsFactors' to 'FALSE' inverses factor interpretation
