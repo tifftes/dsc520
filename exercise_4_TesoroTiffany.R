@@ -50,4 +50,4 @@ ggplot(heights_df, aes(earn)) + geom_histogram(bins = 10)
 
 # https://ggplot2.tidyverse.org/reference/geom_density.html
 ## Create a kernel density plot of `earn` using `geom_density()`
-ggplot(heights_df, aes(earn)) +  geom_density()
+ggplot(heights_df, aes(earn)) + geom_density()
