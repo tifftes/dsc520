@@ -21,6 +21,22 @@ colnames(acs_df)
 #PRINT CLASS FOR EACH CATEGORIES
 #REFERRED FROM https://www.guru99.com/r-apply-sapply-tapply.html
 lapply(acs_df, class)
+#$Id
+#[1] "character"
+#$Id2
+#[1] "integer"
+#$Geography
+#[1] "character"
+#$PopGroupID
+#[1] "integer"
+#$POPGROUP.display.label
+#[1] "character"
+#$RacesReported
+#[1] "integer"
+#$HSDegree
+#[1] "numeric"
+#$BachDegree
+#[1] "numeric"
 
 ## 2. Please provide the output from the following functions: str(); nrow(); ncol()
 
