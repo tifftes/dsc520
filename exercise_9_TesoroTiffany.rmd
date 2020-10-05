@@ -1,0 +1,130 @@
+---
+title: "RMarkdown DSC 520 Exercise 9"
+author: "Tiffany Tesoro"
+date: October 4th 2020
+output:
+  
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## As a data science intern with newly learned knowledge in skills in statistical correlation and R programming, you will analyze the results of a survey recently given to college students. You learn that the research question being investigated is: “Is there a significant relationship between the amount of time spent reading and the time spent watching television?” You are also interested if there are other significant relationships that can be discovered? The survey data is located in this StudentSurvey.csv file.
+
+```{r load data}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/tiffanytesoro/Documents/GitHub/520")
+
+## Load the `data/student-survey.csv` to
+survey_df <- read.csv("data/student-survey.csv")
+```
+TimeReading	TimeTV	Happiness	Gender
+## Use R to calculate the covariance of the Survey variables and provide an explanation of why you would use this calculation and what the results indicate.
+
+```{r covariance}
+cov(survey_df[])
+```
+
+I referred to page 252 of the R for everyone textbook where it showed an example of how the cor function works with multiple variables. The covariance can be used to compare relationships with other variables often to see whether they have similar or different tendencies of their mean. If both variables are lower or higher than their mean, a relationship between the two could be a possibility.
+
+## Examine the Survey data variables. What measurement is being used for the variables? Explain what effect changing the measurement being used for the variables would have on the covariance calculation. Would this be a problem? Explain and provide a better alternative if needed.
+
+It is difficult to tell what variables TimeReading, TimeTV, and Happiness are being measured in. While it is possible TimeTV could indicate minutes, the same cannot be said for TimeReading. Also, Gender is not measured in 1 or 0 so as it is likely the options given for male or female. Changing the meausurement to a consistent Time measurement could make it easier to compare TimeReading and Happiness or Gender with TimeTV and Happiness or Gender. 
+
+## Choose the type of correlation test to perform, explain why you chose this test, and make a prediction if the test yields a positive or negative correlation?
+
+I chose the cor() function since I would not need to change my data from dataframe to matrix since rcorr() function does not work on dataframes. My prediction is that Happiness may have a positive correlation with TimeTV and TimeReading.
+
+## Perform a correlation analysis of:
+## All variables
+
+```{r variables correlation}
+cor(survey_df, use = "complete.obs", method = "pearson")
+```
+
+## A single correlation between two a pair of the variables
+
+
+```{r pair correlation}
+cor.test(survey_df$TimeReading, survey_df$Happiness, method = "pearson")
+```
+
+Referred to PG 218 in Discovering Statistics for negative correlation prediction:
+```{r pair negative correlation}
+cor.test(survey_df$TimeReading, survey_df$Happiness, alternative = "less", method = "pearson")
+```
+
+## Repeat your correlation test in step 2 but set the confidence interval at 99%
+
+```{r confidence interval 99% correlation}
+cor.test(survey_df$TimeReading, survey_df$Happiness, alternative = "less", method = "pearson", conf.level = 0.99)
+```
+
+## Describe what the calculations in the correlation matrix suggest about the relationship between the variables. Be specific with your explanation.
+
+The output of correlation lies between -1 and 1 so comparing all the correlations shows whether there may be a possible relationship between observed variables if closer to 1. In this case, the variables with the highest correlation include Happiness and TimeTV being closest to 1. The closer to -1 the correlation output is indicates that there is not likely a relationship between two variables such as TimeTV and TimeReading with a correlation of -0.88306768. 
+
+## Calculate the correlation coefficient and the coefficient of determination, describe what you conclude about the results.
+
+```{r coefficient of determination}
+TimeTV.lm = lm(TimeTV ~ Happiness, data=survey_df)
+summary(TimeTV.lm)$r.squared 
+```
+
+```{r correlation coefficient}
+TimeTV = survey_df$TimeTV  
+Happiness = survey_df$Happiness    
+cor(TimeTV, Happiness) 
+```
+
+The results were both positive and closer to 1 than -1. It is likely there is a relationship between the two variables.
+
+## Based on your analysis can you say that watching more TV caused students to read less? Explain.
+
+Based on calculations, the correlation is -0.88306768 which is very close to -1 so it is more likely that they do not have a relationship based on this data.
+
+## Pick three variables and perform a partial correlation, documenting which variable you are “controlling”. Explain how this changes your interpretation and explanation of the results.
+
+```{r partial correlation - control TimeReading}
+library(ggm)
+pcor(c("Happiness", "TimeTV", "TimeReading"), var(survey_df))
+```
+
+```{r partial correlation - control Gender}
+pcor(c("Happiness", "TimeTV", "Gender"), var(survey_df))
+```
+
+```{r partial correlation - control TimeTV}
+pcor(c("Happiness", "TimeReading", "TimeTV"), var(survey_df))
+```
+
+When control TimeTV and comparing Happiness with TimeReading, the output is significantly greater than what is found the original correlation matrix, -0.4348663. It is difficult to determine whether TimeReading and TimeTV are impacted by each other since there are other factors relating to those activities that might not be studied for this data. 
+
+
+## Note - Remove example code and comments before submitting assignment.  Producing a professional R Markdown document is the goal. 
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## References
+
+http://www.r-tutor.com/elementary-statistics/numerical-measures/correlation-coefficient
