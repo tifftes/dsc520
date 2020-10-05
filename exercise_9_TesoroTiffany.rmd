@@ -41,11 +41,11 @@ I chose the cor() function since I would not need to change my data from datafra
 ## All variables
 
 ```{r variables correlation}
+## calculates correlation for all dataframe
 cor(survey_df, use = "complete.obs", method = "pearson")
 ```
 
 ## A single correlation between two a pair of the variables
-
 
 ```{r pair correlation}
 cor.test(survey_df$TimeReading, survey_df$Happiness, method = "pearson")
